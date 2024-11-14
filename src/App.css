@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.bg-login {
+    background-image: url(./src/assets/images/like-bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bg-home {
+    background-image: url(./src/assets/images/home-bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.active {
+    opacity: 1;
+}
+
+.liked-songs {
+    opacity: 1;
+}
+
+.navigate-btn {
+    background-color: rgba(0, 0, 0, 50%);
+}
+
+.bg-item {
+    background-color: rgba(255, 255, 255, 10%);
+}
+
+.music-card-item {
+    background-color: rgba(255, 255, 255, 4%);
+}
