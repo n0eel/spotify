@@ -4,7 +4,11 @@ import { BrowserRouter } from 'react-router-dom'
 import { UniContext } from './context/Context.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
+  <BrowserRouter
+    future={{
+      v7_startTransition: true,
+    }}
+  >
     <UniContext>
       <App />
     </UniContext>

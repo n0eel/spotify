@@ -4,13 +4,14 @@ import NavigateBtn from '../../components/NavigateBtn'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { CLIENT_ID } from '../../hook/useEnv'
 import { Context } from '../../context/Context'
+import { useNavigate } from 'react-router-dom'
 
 const MusicList = lazy(() => new Promise((resolve) => {
   return setTimeout(() => resolve(import("../../components/MusicList")), 500)
 }))
 
 function Home() {
-  const { accessToken } = useContext(Context)
+  const { accessToken, setPlay, setPlaying } = useContext(Context)
   const spotifyApi = new SpotifyWebApi({
     clientId: CLIENT_ID
   })
@@ -24,12 +25,12 @@ function Home() {
 
   useEffect(() => {
     if (accessToken) {
-      spotifyApi.searchTracks("friendly thug").then(res => {
-        setHomeTopTracks(res.body.tracks.items.splice(0, 6).map(item => {
+      spotifyApi.searchAlbums("friendly thug").then(res => {
+        setHomeTopTracks(res.body.albums.items.splice(0, 6).map(item => {
           const data = {
             id: item.id,
             trackName: item.name,
-            trackImg: item.album.images[0].url,
+            trackImg: item.images[0].url,
             artistsName: item.artists[0].name,
             uri: item.uri
           }
@@ -39,14 +40,22 @@ function Home() {
     }
   }, [accessToken])
 
+  const navigate = useNavigate()
+
+function handlePlayMusic(item) {
+  setPlay(item.uri)
+  setPlaying(true)
+  navigate(`/music/${item.id}`)
+}
+
   return (
-    <div className='bg-home h-auto'>
+    <div className='h-auto bg-home'>
       <NavigateBtn />
       <div className='pt-[30px] px-10 pb-[50px]'>
         <h2 className='font-bold text-[30px] text-white mb-[29px]'>Good afternoon</h2>
         <ul className='flex justify-between flex-wrap gap-[16px]'>
           {homeTopTracks.map(item => (
-            <li className='flex items-center overflow-hidden space-x-[22px] w-[49%] bg-item rounded-[6px] cursor-pointer' key={item.id}>
+            <li onClick={() => handlePlayMusic(item)} className='flex items-center overflow-hidden space-x-[22px] w-[49%] bg-item rounded-[6px] cursor-pointer' key={item.id}>
               <img src={item.trackImg} alt="Track Img" width={82} height={82} />
               <h3 className='text-[20px] font-semibold text-white'>{item.trackName}</h3>
             </li>
